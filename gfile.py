@@ -46,7 +46,7 @@ if __name__ =="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--shared_url', required=True, help='Google Drive Shared Link')
     parser.add_argument('-f', '--filename',  type=str, default='download.zip')
-    parser.add_argument('-d', '--target_dir',      type=str, default='/content')          
+    parser.add_argument('-d', '--target_dir',      type=str, default='./')          
     args = parser.parse_args()
     
     main(args.shared_url, args.filename, args.target_dir )
