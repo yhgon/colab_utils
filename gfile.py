@@ -45,6 +45,5 @@ if __name__ =="__main__":
     parser.add_argument('-f', '--filename',  type=str, default='download.zip')
     parser.add_argument('-d', '--target_dir',      type=str, default='/content')          
     args = parser.parse_args()
-    main(args.IDs, args.destination, args.target_dir, args.csv_filename)
-
+    
     main(args.Google_file_IDs, args.filename, args.target_dir )
