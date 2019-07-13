@@ -58,7 +58,7 @@ def main(url, filename, target_dir ):
     t = time.time()
     download_file_from_google_drive(id, save_filename)
     elapsed = time.time() - t
-    print("It took {}sec to download {} {} ".format(round(elapsed, 2) ), file_size(save_filename),  filename) 
+    print("It took {}sec to download {} {} ".format(round(elapsed, 2), file_size(save_filename),  filename) ) 
     
 if __name__ =="__main__":
     import argparse
