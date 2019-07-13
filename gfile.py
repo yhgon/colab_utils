@@ -1,4 +1,6 @@
 import requests
+import os
+import sys
 
 def download_file_from_google_drive(id, destination):
     def get_confirm_token(response):
@@ -28,3 +30,21 @@ def download_file_from_google_drive(id, destination):
         response = session.get(URL, params = params, stream = True)
 
     save_response_content(response, destination)
+
+def main(id, filename, target_dir ):   
+    t = time.time()
+    save_filename=os.path.join(target_dir, filename)
+    download_file_from_google_drive(id, save_filename)
+    elapsed = time.time() - t
+    print("it takes {} sec ".format(elapsed) ) 
+    
+if __name__ =="__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--Google_file_IDs', required=True)
+    parser.add_argument('-f', '--filename',  type=str, default='download.zip')
+    parser.add_argument('-d', '--target_dir',      type=str, default='/content')          
+    args = parser.parse_args()
+    main(args.IDs, args.destination, args.target_dir, args.csv_filename)
+
+    main(args.Google_file_IDs, args.filename, args.target_dir )
