@@ -31,9 +31,12 @@ def download_file_from_google_drive(id, destination):
 
     save_response_content(response, destination)
 
-def main(id, filename, target_dir ):   
-    t = time.time()
+def main(url, filename, target_dir ):
+    prefix="https://drive.google.com/file/d/"
+    postfix="/view?usp=sharing"
+    id=url.replace(prefix, '').replace(postfix, '')
     save_filename=os.path.join(target_dir, filename)
+    t = time.time()
     download_file_from_google_drive(id, save_filename)
     elapsed = time.time() - t
     print("it takes {} sec ".format(elapsed) ) 
@@ -41,9 +44,9 @@ def main(id, filename, target_dir ):
 if __name__ =="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--Google_file_IDs', required=True)
+    parser.add_argument('-u', '--shared_url', required=True, help='Google Drive Shared Link')
     parser.add_argument('-f', '--filename',  type=str, default='download.zip')
     parser.add_argument('-d', '--target_dir',      type=str, default='/content')          
     args = parser.parse_args()
     
-    main(args.Google_file_IDs, args.filename, args.target_dir )
+    main(args.shared_url, args.filename, args.target_dir )
