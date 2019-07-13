@@ -32,6 +32,24 @@ def download_file_from_google_drive(id, destination):
 
     save_response_content(response, destination)
 
+def convert_bytes(num):
+    """
+    this function will convert bytes to MB.... GB... etc
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1024.0:
+            return "%3.1f %s" % (num, x)
+        num /= 1024.0
+
+
+def file_size(file_path):
+    """
+    this function will return the file size
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        return convert_bytes(file_info.st_size)
+
 def main(url, filename, target_dir ):
     prefix="https://drive.google.com/file/d/"
     postfix="/view?usp=sharing"
@@ -40,7 +58,7 @@ def main(url, filename, target_dir ):
     t = time.time()
     download_file_from_google_drive(id, save_filename)
     elapsed = time.time() - t
-    print("it takes {} sec ".format(elapsed) ) 
+    print("It took {}sec to download {} {} ".format(round(elapsed, 2) ), file_size(save_filename),  filename) 
     
 if __name__ =="__main__":
     import argparse
