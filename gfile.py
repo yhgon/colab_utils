@@ -40,7 +40,20 @@ def convert_bytes(num):
         if num < 1024.0:
             return "%3.1f %s" % (num, x)
         num /= 1024.0
+        
+def convert_human_time(seconds,digits):
+    if seconds< 60 : 
+      out = " {}sec".format(round(seconds, digits) )
+    else:
+        if seconds<360 :
+          m, s = divmod(seconds, 60)
+          out = " {}min {}sec".format( int(m), round(s, digits) )
+        else :
+            m, s = divmod(seconds, 60)
+            h, m = divmod(m, 60)
+            out = " {}h {}min {}sec".format( int(h) ,  int(m) , round(s, digits) )
 
+    return out
 
 def file_size(file_path):
     """
@@ -58,7 +71,7 @@ def main(url, filename, target_dir ):
     t = time.time()
     download_file_from_google_drive(id, save_filename)
     elapsed = time.time() - t
-    print("It took {}sec to download {} {} ".format(round(elapsed, 2), file_size(save_filename),  filename) ) 
+    print("It took {}sec to download {} {} ".format( convert_human_time(elapsed,2) , file_size(save_filename),  filename) ) 
     
 if __name__ =="__main__":
     import argparse
