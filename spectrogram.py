@@ -20,11 +20,22 @@ from librosa.filters import mel as librosa_mel_fn
 import librosa.util as librosa_util
 from librosa.util import pad_center, tiny
 
+def files_to_list(filename): 
+    with open(filename, encoding='utf-8') as f:
+        files = f.readlines()
+    files = [f.rstrip() for f in files]
+    return files
+
+def load_wav_to_torch(full_path): 
+    sampling_rate, data = read(full_path)
+    return torch.from_numpy(data).float(), sampling_rate
+
 def window_sumsquare(window, n_frames, hop_length=200, win_length=800,
                      n_fft=800, dtype=np.float32, norm=None): 
+  
     if win_length is None:
         win_length = n_fft
-
+        
     n = n_fft + hop_length * (n_frames - 1)
     x = np.zeros(n, dtype=dtype)
 
@@ -32,17 +43,13 @@ def window_sumsquare(window, n_frames, hop_length=200, win_length=800,
     win_sq = get_window(window, win_length, fftbins=True)
     win_sq = librosa_util.normalize(win_sq, norm=norm)**2
     win_sq = librosa_util.pad_center(win_sq, n_fft)
-
     # Fill the envelope
     for i in range(n_frames):
         sample = i * hop_length
         x[sample:min(n, sample + n_fft)] += win_sq[:max(0, min(n_fft, n - sample))]
     return x
 
-
-def griffin_lim(magnitudes, stft_fn, n_iters=50):
- 
-
+def griffin_lim(magnitudes, stft_fn, n_iters=50): 
     angles = np.angle(np.exp(2j * np.pi * np.random.rand(*magnitudes.size())))
     angles = angles.astype(np.float32)
     angles = torch.autograd.Variable(torch.from_numpy(angles))
@@ -53,16 +60,11 @@ def griffin_lim(magnitudes, stft_fn, n_iters=50):
         signal = stft_fn.inverse(magnitudes, angles).squeeze(1)
     return signal
 
-
 def dynamic_range_compression(x, C=1, clip_val=1e-5):
- 
     return torch.log(torch.clamp(x, min=clip_val) * C)
 
-
-def dynamic_range_decompression(x, C=1):
- 
+def dynamic_range_decompression(x, C=1): 
     return torch.exp(x) / C
-
 
 class STFT(torch.nn.Module):
     """adapted from Prem Seetharaman's https://github.com/pseeth/pytorch-stft"""
@@ -164,6 +166,7 @@ class STFT(torch.nn.Module):
         self.magnitude, self.phase = self.transform(input_data)
         reconstruction = self.inverse(self.magnitude, self.phase)
         return reconstruction
+      
 class TacotronSTFT(torch.nn.Module):
     def __init__(self, filter_length=1024, hop_length=256, win_length=1024,
                  n_mel_channels=80, sampling_rate=22050, mel_fmin=0.0,
@@ -192,27 +195,12 @@ class TacotronSTFT(torch.nn.Module):
 
         magnitudes, phases = self.stft_fn.transform(y)
         magnitudes = magnitudes.data
-        magnitudes = magnitudes** 2 # Power = 2
+        #magnitudes = magnitudes** 2 # Power = 2
         mel_output = torch.matmul(self.mel_basis, magnitudes)
         mel_output = self.spectral_normalize(mel_output)  # logscale
         return mel_output
-def files_to_list(filename):
- 
-    with open(filename, encoding='utf-8') as f:
-        files = f.readlines()
 
-    files = [f.rstrip() for f in files]
-    return files
-
-
-def load_wav_to_torch(full_path):
- 
-    sampling_rate, data = read(full_path)
-    return torch.from_numpy(data).float(), sampling_rate
-
-
-class Mel2Samp(torch.utils.data.Dataset):
- 
+class Mel2Samp(torch.utils.data.Dataset): 
     def __init__(self, training_files, noise_files, segment_length,
                  filter_length, hop_length, win_length, sampling_rate, mel_fmin,
                  mel_fmax, p_dropout):
