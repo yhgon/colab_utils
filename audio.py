@@ -4,9 +4,9 @@ from librosa.display import specshow as specshow
 import matplotlib.pyplot as plt
 import numpy as np
 
-def display_audio(filename, srt=22050, mono=True):
+def display_audio(filename, srt=22050, mono=True, sec=3):
     y_22k, sr_22k = librosa.load(filename, sr=22050, mono=mono)
-    y_22k=y_22k[0:3*sr_22k]
+    y_22k=y_22k[0:sec*sr_22k]
     ipd.display(ipd.Audio(y_22k, rate=sr_22k) )
     return y_22k, sr_22k
     
