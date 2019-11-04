@@ -64,9 +64,10 @@ def file_size(file_path):
         return convert_bytes(file_info.st_size)
 
 def main(url, filename, target_dir ):
-    prefix="https://drive.google.com/file/d/"
+    prefix1="https://drive.google.com/file/d/"
+    prefix2="https://drive.google.com/open?id="          
     postfix="/view?usp=sharing"
-    id=url.replace(prefix, '').replace(postfix, '')
+    id=url.replace(prefix1, '')..replace(prefix2, '').replace(postfix, '')
     save_filename=os.path.join(target_dir, filename)
     t = time.time()
     download_file_from_google_drive(id, save_filename)
