@@ -147,14 +147,14 @@ def data_step1(filename, prefix='librivox_chunk_', max_len=1, work_dir = '/conte
             if (i > max_len ) : 
                 break
             id=line.replace(str_prefix, '').replace(str_postfix, '').replace(str_space, '').replace(str_enter, '')
-            print(i, id, end ='' )
+            #print(i, id, end ='' )
             str_filename_input = "" + str(line) + "" 
             str_filename_output = str(prefix) + str(i).zfill(6) 
             str_filename_output_wav_ext = str_filename_output +'.wav'
             str_filename_output_csv_ext = str_filename_output +'.csv'
             save_filename_csv = os.path.join(work_dir, str_filename_output_csv_ext)
             save_filename_wav = os.path.join(work_dir, str_filename_output_wav_ext)
-            print(save_filename)
+            #print(save_filename_wav, save_filename_csv)
 
             download_main( str_filename_input, str_filename_output_wav_ext, work_dir )           
             this_data = load_resample(save_filename_wav, sr_org = 22050, sr_target = 22050 )
