@@ -91,7 +91,7 @@ def chunk_step1_v1(fname='/content/wavs_22khz/piracy_09_female_Linda_Johnson.wav
     return new_data2
 
 def chunk_step1_v2(data , sr=16000, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename='csv_example.csv',  vo_query_value = 0.24,  si_query_value = 0.4):
-    y_result_level_1  = librosa.effects.split( y=data, top_db=chunk_top_db, frame_length=chunk_frame_length, hop_length=chunk_hop_length)
+    y_result_level_1  = librosa.effects.split( y=data, top_db=chunk_top_db, frame_length=chunk_frame_length, hop_length=chunk_hop_length) # default db 60
     #print ( y_result_level_1.shape, np.round( y_result_level_1 / sr, 2)  )   
 
     data = np.array( y_result_level_1 )
@@ -113,7 +113,7 @@ def chunk_step1_v2(data , sr=16000, chunk_top_db=60, chunk_frame_length=512, chu
     new_data['si_d_sec'] = new_data['si_d']/sr 
     #print(new_data.shape)
 
-    new_data2 = new_data.query('si_d_sec > {}'.format(si_query_value)  ).reset_index(drop=True) 
+    new_data2 = new_data.query('si_d_sec > {}'.format(si_query_value)  ).reset_index(drop=True)  # default si_d_sec > 0.4
     #print(new_data2.shape)
     new_data2.drop(['vo_s','vo_e','vo_d','vo_s_sec','vo_e_sec','vo_d_sec','si_s_sec', 'si_d','si_e_sec'],axis=1)
     new_data2['vo_s'] = new_data2['si_e']+1
@@ -160,5 +160,5 @@ def data_step1(filename, prefix='librivox_chunk_', max_len=1, work_dir = '/conte
             this_data = load_resample(save_filename_wav, sr_org = 22050, sr_target = 22050 )
             show_wave(this_data, sr=16000, dur=10 )
             #chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename=str_filename_output_csv_ext, query_value=0.24)            
-            chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=10, chunk_frame_length=512, chunk_hop_length=32, csv_filename=save_filename_csv, vo_query_value = 0.24,  si_query_value = 0.4)
+            chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename=save_filename_csv, vo_query_value = 0.24,  si_query_value = 0.4)
             i += 1
