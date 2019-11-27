@@ -2,8 +2,6 @@ import os
 import sys 
 import librosa 
 
-
-
 def load_resample(filename, sr_org = 22050, sr_target = 16000 ):
     data, sr = librosa.load(filename , sr = sr_org )
     data_16k_polyphase  = librosa.core.resample(data, sr_org, sr_target, res_type='polyphase', fix=True, scale=False ) # fast and high quality
@@ -20,6 +18,7 @@ def display_fileinfo(check_data, check_sr ):
 def show_wave(data, sr , dur=10):
     import matplotlib.pyplot as plt
     import librosa.display
+    
     plt.figure( figsize=(16,1) )
     librosa.display.waveplot(data[0:sr*dur] , sr=sr, alpha=1) 
     plt.show()
