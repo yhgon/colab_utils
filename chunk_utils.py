@@ -90,7 +90,7 @@ def chunk_step1_v1(fname='/content/wavs_22khz/piracy_09_female_Linda_Johnson.wav
     plt.show()
     return new_data2
 
-def chunk_step1_v2(data , sr=16000, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename='csv_example.csv', vo_query_value = 0.24,  si_query_value = 0.4):
+def chunk_step1_v2(data , sr=16000, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename='csv_example.csv',  vo_query_value = 0.24,  si_query_value = 0.4):
     y_result_level_1  = librosa.effects.split( y=data, top_db=chunk_top_db, frame_length=chunk_frame_length, hop_length=chunk_hop_length)
     #print ( y_result_level_1.shape, np.round( y_result_level_1 / sr, 2)  )   
 
@@ -131,6 +131,7 @@ def chunk_step1_v2(data , sr=16000, chunk_top_db=60, chunk_frame_length=512, chu
     plt.hist = new_data2['si_d_sec'].hist(bins=200)
     plt.title('duration of each silence')
     plt.show()
+
     new_data2.to_csv(csv_filename, mode='w')
     return new_data2
 
@@ -151,12 +152,13 @@ def data_step1(filename, prefix='librivox_chunk_', max_len=1, work_dir = '/conte
             str_filename_output = str(prefix) + str(i).zfill(6) 
             str_filename_output_wav_ext = str_filename_output +'.wav'
             str_filename_output_csv_ext = str_filename_output +'.csv'
-            save_filename = os.path.join(work_dir, str_filename_output_wav_ext)
+            save_filename_csv = os.path.join(work_dir, str_filename_output_csv_ext)
+            save_filename_wav = os.path.join(work_dir, str_filename_output_wav_ext)
             print(save_filename)
 
             download_main( str_filename_input, str_filename_output_wav_ext, work_dir )           
-            this_data = load_resample(save_filename, sr_org = 22050, sr_target = 22050 )
+            this_data = load_resample(save_filename_wav, sr_org = 22050, sr_target = 22050 )
             show_wave(this_data, sr=16000, dur=10 )
             #chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename=str_filename_output_csv_ext, query_value=0.24)            
-            chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=10, chunk_frame_length=512, chunk_hop_length=32, csv_filename=str_filename_output_csv_ext,  vo_query_value = 0.24,  si_query_value = 0.4)
+            chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=10, chunk_frame_length=512, chunk_hop_length=32, csv_filename=save_filename_csv, vo_query_value = 0.24,  si_query_value = 0.4)
             i += 1
