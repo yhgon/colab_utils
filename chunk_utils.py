@@ -2,6 +2,7 @@ import os
 import sys 
 import librosa 
 import numpy as np 
+import pandas as pd
 import matplotlib.pyplot as plt
 import librosa.display
 from gfile import  download_list as download_main  ########## assume gfile.py
