@@ -2,6 +2,9 @@ import os
 import sys 
 import librosa 
 
+import matplotlib.pyplot as plt
+import librosa.display
+
 def load_resample(filename, sr_org = 22050, sr_target = 16000 ):
     data, sr = librosa.load(filename , sr = sr_org )
     data_16k_polyphase  = librosa.core.resample(data, sr_org, sr_target, res_type='polyphase', fix=True, scale=False ) # fast and high quality
