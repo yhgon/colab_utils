@@ -76,8 +76,8 @@ def main(url, filename, target_dir ):
 
 
 def download_list(url, filename, target_dir ):
-    prefix1  = "https://drive.google.com/file/d/"
-    prefix2="https://drive.google.com/open?id="         
+    str_prefix1 = "https://drive.google.com/file/d/"
+    str_prefix2 = "https://drive.google.com/open?id="         
     str_postfix = "/view?usp=sharing"
     str_space   = " "
     str_enter   = "\n"
