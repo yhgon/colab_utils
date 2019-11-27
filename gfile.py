@@ -73,6 +73,21 @@ def main(url, filename, target_dir ):
     download_file_from_google_drive(id, save_filename)
     elapsed = time.time() - t
     print("It took {} to download {} {} ".format( convert_human_time(elapsed,2) , file_size(save_filename),  filename) ) 
+
+
+def download_list(url, filename, target_dir ):
+    prefix1  = "https://drive.google.com/file/d/"
+    prefix2="https://drive.google.com/open?id="         
+    str_postfix = "/view?usp=sharing"
+    str_space   = " "
+    str_enter   = "\n"
+    id=url.replace(str_prefix1, '').replace(str_prefix2, '').replace(str_postfix, '').replace(str_space, '').replace(str_enter, '')
+    save_filename=os.path.join(target_dir, filename)
+    t = time.time()
+    download_file_from_google_drive(id, save_filename)
+    elapsed = time.time() - t
+    print("It took {} to download {} {} ".format( convert_human_time(elapsed,2) , file_size(save_filename),  filename) ) 
+    
     
 if __name__ =="__main__":
     import argparse
