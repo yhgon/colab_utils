@@ -2,8 +2,7 @@ import os
 import sys 
 import librosa 
 
-import matplotlib.pyplot as plt
-import librosa.display
+
 
 def load_resample(filename, sr_org = 22050, sr_target = 16000 ):
     data, sr = librosa.load(filename , sr = sr_org )
@@ -19,6 +18,8 @@ def display_fileinfo(check_data, check_sr ):
     print( " duration : {} Min,   {} K {} sec,   {}M  {}K samples with sr {} ".format( data_mins,  data_ksecs, data_secs , data_msams ,data_ksams , sr )  )
 
 def show_wave(data, sr , dur=10):
+    import matplotlib.pyplot as plt
+    import librosa.display
     plt.figure( figsize=(16,1) )
     librosa.display.waveplot(data[0:sr*dur] , sr=sr, alpha=1) 
     plt.show()
@@ -39,7 +40,8 @@ def volume_slider(signal, dB):
     return signal
 
 def chunk_step1_v1(fname='/content/wavs_22khz/piracy_09_female_Linda_Johnson.wav', sr=22050, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32):
-
+    import matplotlib.pyplot as plt
+    import librosa.display
     data, sr = librosa.load(fname, sr = sr  )
 
     plt.figure( figsize=(16,1) )
@@ -90,6 +92,8 @@ def chunk_step1_v1(fname='/content/wavs_22khz/piracy_09_female_Linda_Johnson.wav
     return new_data2
 
 def chunk_step1_v2(data , sr=16000, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename='csv_example.csv', vo_query_value = 0.24,  si_query_value = 0.4):
+    import matplotlib.pyplot as plt
+    import librosa.display
     y_result_level_1  = librosa.effects.split( y=data, top_db=chunk_top_db, frame_length=chunk_frame_length, hop_length=chunk_hop_length)
     #print ( y_result_level_1.shape, np.round( y_result_level_1 / sr, 2)  )   
 
