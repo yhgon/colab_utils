@@ -155,7 +155,7 @@ def data_step1(filename, prefix='librivox_chunk_', max_len=1, work_dir = '/conte
             print(save_filename)
 
             download_main( str_filename_input, str_filename_output_wav_ext, work_dir )           
-            this_data = load_resample(save_filename, sr_org = 22050, sr_target = 16000 )
+            this_data = load_resample(save_filename, sr_org = 22050, sr_target = 22050 )
             show_wave(this_data, sr=16000, dur=10 )
             #chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=60, chunk_frame_length=512, chunk_hop_length=32, csv_filename=str_filename_output_csv_ext, query_value=0.24)            
             chunk_step1_v2(data=this_data, sr=22050, chunk_top_db=10, chunk_frame_length=512, chunk_hop_length=32, csv_filename=str_filename_output_csv_ext,  vo_query_value = 0.24,  si_query_value = 0.4)
